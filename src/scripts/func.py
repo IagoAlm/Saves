@@ -61,6 +61,7 @@ def showGame(wrapper=dict):
     path = "C:\\Program Files (x86)\\Steam\\steamapps\\appmanifest_12120.acf"
     file = open(path, "r")
     arq = file.read()
+    print(arq)
     lines = (arq.strip() for lines in arq.splitlines())
 
     parsed = wrapper()
@@ -73,8 +74,14 @@ def showGame(wrapper=dict):
         key = key.replace('"', '').lstrip()
 
         current_section[key] = value
-    print(parsed)
-    return parsed
+
+    for elm in parsed:
+        # print(parsed[elm])
+        key = parsed[elm].replace('\t', ' ')
+        key = key.replace('"', ' ')
+        # print(key)
+        valor = key.split()
+        print(valor)
 
 
 showGame()
