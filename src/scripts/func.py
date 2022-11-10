@@ -57,11 +57,24 @@ def findLocales(libraries):
     print(apps)
 
 
-def showGame():
+def showGame(wrapper=dict):
     path = "C:\\Program Files (x86)\\Steam\\steamapps\\appmanifest_12120.acf"
     file = open(path, "r")
+    arq = file.read()
+    lines = (arq.strip() for lines in arq.splitlines())
 
-    print(file.readlines())
+    parsed = wrapper()
+    current_section = parsed
+    sections = []
+
+    for line in lines:
+
+        key, value = line.split(None, 1)
+        key = key.replace('"', '').lstrip()
+
+        current_section[key] = value
+    print(parsed)
+    return parsed
 
 
 showGame()
