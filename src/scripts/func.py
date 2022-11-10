@@ -45,9 +45,24 @@ def findFolders():
 
 
 def findLocales(libraries):
+    apps = dict()
+
     for path in libraries:
-        ops = os.listdir(path)
-        print(ops)
+        items = list()
+        files = os.listdir(path)
+        for item in files:
+            if ".acf" in item:
+                items.append(item)
+        apps[path] = items
+    print(apps)
 
 
-findLocales(findLocales())
+def showGame():
+    path = "C:\\Program Files (x86)\\Steam\\steamapps\\appmanifest_12120.acf"
+    file = open(path, "r")
+
+    print(file.readlines())
+
+
+showGame()
+# findLocales(findFolders())
