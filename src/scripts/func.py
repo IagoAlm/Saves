@@ -61,7 +61,7 @@ def showGame(wrapper=dict):
     path = "C:\\Program Files (x86)\\Steam\\steamapps\\appmanifest_12120.acf"
     file = open(path, "r")
     arq = file.read()
-    print(arq)
+    # print(arq)
     lines = (arq.strip() for lines in arq.splitlines())
 
     parsed = wrapper()
@@ -74,15 +74,30 @@ def showGame(wrapper=dict):
         key = key.replace('"', '').lstrip()
 
         current_section[key] = value
-
     for elm in parsed:
         # print(parsed[elm])
-        key = parsed[elm].replace('\t', ' ')
+        #key = parsed[elm].replace('{\t', '{-')
+        #key = key.replace('\t}', '-}')
+        key = parsed[elm].replace('\n\t}', '-limit-}')
+        key = key.replace('\n\t{', '')
+        key = key.replace('\n\t', '-limit-')
+        key = key.replace('\t\t', '-middle-')
+
+        key = key.replace('\t', '')
         key = key.replace('"', ' ')
+        key = key.replace('{-limit-', '{(')
+        key = key.replace('-middle-', ',')
+        key = key.replace(' -limit- ', '),(')
+        key = key.replace(' -limit-} ', ')}')
+        key = key.replace('-limit-{(', ', [(')
+        key = key.replace('{(,', ' ')
+        key = key.replace('-limit-}-limit', ')]')
+        parsed[elm] = key
         # print(key)
         valor = key.split()
-        print(valor)
+
+    print(parsed)
 
 
-showGame()
-# findLocales(findFolders())
+# showGame()
+findLocales(findFolders())
