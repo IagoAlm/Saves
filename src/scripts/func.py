@@ -61,43 +61,30 @@ def showGame(wrapper=dict):
     path = "C:\\Program Files (x86)\\Steam\\steamapps\\appmanifest_12120.acf"
     file = open(path, "r")
     arq = file.read()
+
     # print(arq)
     lines = (arq.strip() for lines in arq.splitlines())
 
-    parsed = wrapper()
-    current_section = parsed
-    sections = []
-
     for line in lines:
+        data = line.split('"')
 
-        key, value = line.split(None, 1)
-        key = key.replace('"', '').lstrip()
+    contr = 0
+    string = ""
+    for item in data:
 
-        current_section[key] = value
-    for elm in parsed:
-        # print(parsed[elm])
-        #key = parsed[elm].replace('{\t', '{-')
-        #key = key.replace('\t}', '-}')
-        key = parsed[elm].replace('\n\t}', '-limit-}')
-        key = key.replace('\n\t{', '')
-        key = key.replace('\n\t', '-limit-')
-        key = key.replace('\t\t', '-middle-')
+        temp = item.replace('\n', '')
+        temp = temp.replace('\t\t', ':')
+        temp = temp.replace('\t{:', '\t{')
+        temp = temp.replace(':{:\t', '{\t')
 
-        key = key.replace('\t', '')
-        key = key.replace('"', ' ')
-        key = key.replace('{-limit-', '{(')
-        key = key.replace('-middle-', ',')
-        key = key.replace(' -limit- ', '),(')
-        key = key.replace(' -limit-} ', ')}')
-        key = key.replace('-limit-{(', ', [(')
-        key = key.replace('{(,', ' ')
-        key = key.replace('-limit-}-limit', ')]')
-        parsed[elm] = key
-        # print(key)
-        valor = key.split()
+        data[contr] = temp
+        contr += 1
 
-    print(parsed)
+    for item in data:
+        string += item
+    print(string)
+    print(data)
 
 
-# showGame()
-findLocales(findFolders())
+showGame()
+# findLocales(findFolders())
