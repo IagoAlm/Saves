@@ -57,8 +57,6 @@ def findLocales(libraries):
         apps[path] = items
     print(apps)
 
-# order is list filter then temp = item.replace('\t', '')
-
 
 def transformString(lista):
     string = ''
@@ -85,16 +83,15 @@ def listFilter(data):
 def filterString(string):
     subs = re.sub('{', ':{', string)
     subs = re.sub('}', '}; ', subs)
-
-    subs = re.sub('\t', '', subs)
-    # if this is a vdf file, the next s
     subs = re.sub('\n', '', subs)
+    # fix 12121 items with line 72, put line 88 on top of line 86 and create something that can see if there's more than 1 \t and replace with -middle-
+    subs = re.sub('\t', '', subs)
 
     return subs
 
 
 def showGame():
-    path = "C:\\Program Files (x86)\\Steam\\steamapps\\appmanifest_289070.acf"
+    path = "C:\\Program Files (x86)\\Steam\\steamapps\\appmanifest_12120.acf"
     file = open(path, "r")
     arq = file.read()
 
@@ -103,6 +100,7 @@ def showGame():
 
     for line in lines:
         arqLista = line.split('"')
+    print(arqLista)
     string = transformString(listFilter(arqLista))
 
     print(filterString(string))
