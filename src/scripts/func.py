@@ -57,21 +57,24 @@ def findLocales(libraries):
         apps[path] = items
     print(apps)
 
+# order is list filter then temp = item.replace('\t', '')
+
+
+def transformString(lista):
+    string = ''
+    for item in lista:
+        string = string+item
+    return string
+
 
 def listFilter(data):
     i = 0
 
     while i < len(data):
-        if data[i] == '{':
-            data.insert(i, ':')
-            i += 1
         if data[i] == '\t\t':
-            data[i] = ':'
+            data[i] = '-middle-'
         if data[i] == '\n\t':
-            data[i] = ';'
-        if data[i] == '\n}\n':
-            data[i] = '}'
-            data.insert(i+1, ';')
+            data[i] = '; '
         if data[i] == '':
             data.pop(i)
         else:
@@ -79,8 +82,13 @@ def listFilter(data):
     return data
 
 
-def formatString(data):
-    print()
+def filterString(string):
+    subs = re.sub('{', ':{', string)
+    subs = re.sub('}', '}; ', subs)
+    subs = re.sub('\t', '', subs)
+    subs = re.sub('\n', '', subs)
+
+    return subs
 
 
 def showGame():
@@ -89,26 +97,16 @@ def showGame():
     arq = file.read()
 
     lines = (arq.strip() for lines in arq.splitlines())
+    string = str()
 
     for line in lines:
         arqLista = line.split('"')
-    print(arqLista)
-
-    data = listFilter(arqLista)
-    print(data)
-    string = ''
-    for item in data:
-        string = string+item
-
+    # print(arqLista)
+    string = transformString(listFilter(arqLista))
     print(string)
-    contr = 0
-    for item in data:
-        temp = item.replace('\t', '')
 
-        data[contr] = temp
-        contr += 1
-
-    formatString(data)
+    # print(string)
+    print(filterString(string))
 
 
 showGame()
