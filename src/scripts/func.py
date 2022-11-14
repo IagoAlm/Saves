@@ -85,14 +85,16 @@ def listFilter(data):
 def filterString(string):
     subs = re.sub('{', ':{', string)
     subs = re.sub('}', '}; ', subs)
+
     subs = re.sub('\t', '', subs)
+    # if this is a vdf file, the next s
     subs = re.sub('\n', '', subs)
 
     return subs
 
 
 def showGame():
-    path = "C:\\Program Files (x86)\\Steam\\steamapps\\appmanifest_12120.acf"
+    path = "C:\\Program Files (x86)\\Steam\\steamapps\\appmanifest_289070.acf"
     file = open(path, "r")
     arq = file.read()
 
@@ -101,11 +103,8 @@ def showGame():
 
     for line in lines:
         arqLista = line.split('"')
-    # print(arqLista)
     string = transformString(listFilter(arqLista))
-    print(string)
 
-    # print(string)
     print(filterString(string))
 
 
