@@ -2,6 +2,7 @@ from tkinter import *
 import winreg
 import os
 import vdf
+import re
 
 
 def findVersion(steamPath, bits):
@@ -57,33 +58,57 @@ def findLocales(libraries):
     print(apps)
 
 
-def showGame(wrapper=dict):
+def listFilter(data):
+    i = 0
+
+    while i < len(data):
+        if data[i] == '{':
+            data.insert(i, ':')
+            i += 1
+        if data[i] == '\t\t':
+            data[i] = ':'
+        if data[i] == '\n\t':
+            data[i] = ';'
+        if data[i] == '\n}\n':
+            data[i] = '}'
+            data.insert(i+1, ';')
+        if data[i] == '':
+            data.pop(i)
+        else:
+            i += 1
+    return data
+
+
+def formatString(data):
+    print()
+
+
+def showGame():
     path = "C:\\Program Files (x86)\\Steam\\steamapps\\appmanifest_12120.acf"
     file = open(path, "r")
     arq = file.read()
 
-    # print(arq)
     lines = (arq.strip() for lines in arq.splitlines())
 
     for line in lines:
-        data = line.split('"')
+        arqLista = line.split('"')
+    print(arqLista)
 
-    contr = 0
-    string = ""
+    data = listFilter(arqLista)
+    print(data)
+    string = ''
     for item in data:
+        string = string+item
 
-        temp = item.replace('\n', '')
-        temp = temp.replace('\t\t', ':')
-        temp = temp.replace('\t{:', '\t{')
-        temp = temp.replace(':{:\t', '{\t')
+    print(string)
+    contr = 0
+    for item in data:
+        temp = item.replace('\t', '')
 
         data[contr] = temp
         contr += 1
 
-    for item in data:
-        string += item
-    print(string)
-    print(data)
+    formatString(data)
 
 
 showGame()
