@@ -16,6 +16,7 @@ def findVersion(steamPath, bits):
 
 
 def findFolders():
+    # aqui vem os caminhos padrões para os registros no windows
     steam32 = "SOFTWARE\\VALVE\\STEAM"
     steam64 = "SOFTWARE\\Wow6432Node\\Valve\\Steam"
 
