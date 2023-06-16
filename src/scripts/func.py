@@ -2,6 +2,7 @@ from tkinter import *
 import winreg
 import os
 import vdf
+import re
 
 
 def findVersion(steamPath, bits):
@@ -15,6 +16,7 @@ def findVersion(steamPath, bits):
 
 
 def findFolders():
+    # aqui vem os caminhos padrões para os registros no windows
     steam32 = "SOFTWARE\\VALVE\\STEAM"
     steam64 = "SOFTWARE\\Wow6432Node\\Valve\\Steam"
 
@@ -45,9 +47,65 @@ def findFolders():
 
 
 def findLocales(libraries):
+    apps = dict()
+
     for path in libraries:
-        ops = os.listdir(path)
-        print(ops)
+        items = list()
+        files = os.listdir(path)
+        for item in files:
+            if ".acf" in item:
+                items.append(item)
+        apps[path] = items
+    print(apps)
 
 
-findLocales(findLocales())
+def transformString(lista):
+    string = ''
+    for item in lista:
+        string = string+item
+    return string
+
+
+def listFilter(data):
+    i = 0
+
+    while i < len(data):
+        if data[i] == '\t\t':
+            data[i] = '-middle-'
+        if data[i] == '\n\t':
+            data[i] = '; '
+        if data[i] == '':
+            data.pop(i)
+        else:
+            i += 1
+    return data
+
+
+def filterString(string):
+    subs = re.sub('{', ':{', string)
+    subs = re.sub('}', '}; ', subs)
+    subs = re.sub('\n', '', subs)
+    # fix 12121 items with line 72, put line 88 on top of line 86 and create something that can see if there's more than 1 \t and replace with -middle-
+    subs = re.sub('\t', '', subs)
+
+    return subs
+
+
+def showGame():
+    path = "C:\\Program Files (x86)\\Steam\\steamapps\\appmanifest_12120.acf"
+    file = open(path, "r")
+    arq = file.read()
+
+    lines = (arq.strip() for lines in arq.splitlines())
+    string = str()
+
+    for line in lines:
+        arqLista = line.split('"')
+    print(arqLista)
+    string = transformString(listFilter(arqLista))
+
+    print(filterString(string))
+
+
+showGame()
+# findLocales(findFolders())
